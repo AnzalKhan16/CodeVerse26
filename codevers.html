@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CodeVerse Hackathon — Team Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700&display=swap">
+<style>:root{--bg:#F6F8FB;--surface:#fff;--ink:#0F1B33;--muted:#5A6781;--line:#D9DFEA;--accent:#2F5BFF;--accent-ink:#fff;--ok:#12805C;--warn:#9A5B00;--warn-bg:#FFF4DC;--err:#B3261E;--err-bg:#FDECEA;--r:10px;
+--font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--head:"Sora","IBM Plex Sans",system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#0B1220;--surface:#131C30;--ink:#E8EDF7;--muted:#9AA8C2;--line:#27334F;--accent:#6C8BFF;--accent-ink:#0B1220;--ok:#4CC9A0;--warn:#F2B24C;--warn-bg:#2A2111;--err:#FF8A80;--err-bg:#2D1614}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--font)}
+main{max-width:640px;margin:0 auto;padding:16px 16px 96px}
+h1,h2,h3{font-family:var(--head);line-height:1.2;margin:0}
+h1{font-size:1.5rem}h2{font-size:1.25rem;margin-bottom:4px}h3{font-size:1rem}
+p{margin:.25rem 0 .75rem}.muted{color:var(--muted);font-size:.9rem}
+header.top{padding:12px 0 4px}header.top b{font-family:var(--head);font-size:1.1rem}
+.steps{display:flex;gap:6px;margin:12px 0 20px;padding:0;list-style:none}
+.steps li{flex:1;font-size:.78rem;color:var(--muted);border-top:3px solid var(--line);padding-top:6px}
+.steps li.on{color:var(--ink);border-color:var(--accent);font-weight:600}.steps li.done{border-color:var(--ok);color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.card.leader{border-color:var(--accent);border-width:2px}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tag{font-size:.75rem;background:var(--accent);color:var(--accent-ink);padding:2px 8px;border-radius:99px}
+label{display:block;font-weight:600;font-size:.9rem;margin:12px 0 4px}
+input,select{width:100%;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;min-height:44px}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+input[aria-invalid=true]{border-color:var(--err)}
+.field-err{color:var(--err);font-size:.85rem;margin-top:4px}
+.banner{border-radius:8px;padding:12px;margin:12px 0;font-size:.92rem}
+.banner.info{background:var(--warn-bg);color:var(--warn)}.banner.err{background:var(--err-bg);color:var(--err)}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:6px;font:inherit;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:12px 18px;min-height:44px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}.btn.small{padding:6px 12px;min-height:36px;font-size:.88rem}
+.btn.danger{color:var(--err);border-color:var(--err);background:transparent}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.bar>div{max-width:640px;margin:0 auto;display:flex;gap:10px}.bar .btn{flex:1}
+.count{display:flex;justify-content:space-between;align-items:center;margin:4px 0 12px}
+.count b{font-family:var(--head)}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}dt{color:var(--muted);font-size:.9rem}dd{margin:0;overflow-wrap:anywhere}
+.copyrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.copyrow:last-child{border:0}.copyrow small{display:block;color:var(--muted)}.copyrow code{font:600 1rem ui-monospace,monospace;overflow-wrap:anywhere}
+.amount{font:700 2rem var(--head)}.qr{display:block;margin:8px auto;width:min(60vw,220px);height:auto;background:#fff;padding:8px;border-radius:8px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.seg label{margin:0;border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;gap:8px;align-items:center;font-weight:500;min-height:44px;cursor:pointer}
+.seg input{width:auto;min-height:0}.seg label:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.check li{margin:4px 0}.status{display:inline-block;padding:4px 10px;border-radius:99px;font-weight:600;font-size:.85rem;background:var(--warn-bg);color:var(--warn)}
+.status.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}.status.bad{background:var(--err-bg);color:var(--err)}
+.rid{font:700 1.6rem ui-monospace,monospace;letter-spacing:.04em;overflow-wrap:anywhere}
+.sr{position:absolute;left:-9999px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+html,body{background:var(--bg)}</style></head>
+<body><main id="app" aria-live="polite"><p class="muted">Loading…</p></main>
+<script>// DEMO ONLY: replaces the FastAPI backend with an in-browser mock (same endpoints/shapes). Data lives in this browser only.
+(() => {
+const KEY = "cv_demo_db_v1"; let mem = { teams: {} };
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || mem; } catch { return mem; } };
+const store = d => { mem = d; try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+const QR = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#fff"/><rect x="10" y="10" width="180" height="180" fill="none" stroke="#0F1B33" stroke-width="4" stroke-dasharray="8 6"/><text x="100" y="95" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#0F1B33">Demo QR</text><text x="100" y="115" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#0F1B33">(placeholder)</text></svg>');
+const CFG = { min_members: 4, max_members: 6, fee_per_member: 100, fee_note: "One payment for the whole team", college_email_domains: [], max_proof_mb: 5,
+  payment: { bank: { account_holder: "CODEVERSE ORGANIZERS (DEMO)", bank_name: "Demo Bank", account_number: "000000000000", ifsc: "DEMO0000000" }, upi: { upi_id: "codeverse@upi", qr_url: QR } } };
+const res = (b, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { "Content-Type": "application/json" } });
+const bad = (errors, detail = "Please fix the highlighted fields") => res({ detail, errors }, 422);
+const view = t => ({ registration_id: t.rid, team_name: t.name, college: t.college, track: t.track, status: t.status, member_count: t.members.length, expected_amount: t.expected_amount,
+  leader: t.members[0].full_name, payment: t.payment ? { ...t.payment } : null, members: t.members.map((m, i) => ({ position: i + 1, is_leader: i === 0, full_name: m.full_name, email: m.email })) });
+const realFetch = window.fetch.bind(window);
+window.fetch = async (url, opts = {}) => {
+  if (typeof url !== "string" || !url.startsWith("/api/")) return realFetch(url, opts);
+  await new Promise(r => setTimeout(r, 250));
+  const db = load(), m = (opts.method || "GET").toUpperCase();
+  if (url === "/api/config") return res(CFG);
+  if (url === "/api/registrations" && m === "POST") {
+    const b = JSON.parse(opts.body), n = (b.members || []).length;
+    if (n < 4 || n > 6) return bad({ form: `A team needs 4 to 6 members (you have ${n})` });
+    for (const k of ["reg_no", "email", "phone"]) { const v = b.members.map(x => String(x[k]).trim().toLowerCase()); if (new Set(v).size !== v.length) return bad({ form: `Each member needs a different ${k.replace("_", " ")}` }); }
+    if (Object.values(db.teams).some(t => t.name.toLowerCase() === b.name.trim().toLowerCase())) return res({ detail: "A team with this name is already registered. Please choose another name." }, 409);
+    const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let rid;
+    do rid = "CV26-" + Array.from({ length: 6 }, () => A[Math.floor(Math.random() * A.length)]).join(""); while (db.teams[rid]);
+    db.teams[rid] = { rid, name: b.name.trim(), college: b.college.trim(), track: (b.track || "").trim() || null, expected_amount: 100 * n, status: "PAYMENT_PENDING", payment: null,
+      members: b.members.map(x => ({ full_name: x.full_name.trim(), reg_no: x.reg_no.trim().toUpperCase(), email: x.email.trim().toLowerCase(), phone: x.phone.trim() })) };
+    store(db); return res(view(db.teams[rid]), 201);
+  }
+  const g = url.match(/^\/api\/registrations\/([A-Za-z0-9-]+)(\/payment)?$/);
+  if (g) {
+    const t = db.teams[g[1].toUpperCase()]; if (!t) return res({ detail: "Registration not found" }, 404);
+    if (!g[2] && m === "GET") return res(view(t));
+    if (g[2] && m === "POST") {
+      if (t.payment && t.payment.status !== "REJECTED") return res({ detail: "Payment details were already submitted for this team." }, 409);
+      const f = opts.body, utr = String(f.get("txn_id")).trim().toUpperCase(), file = f.get("proof");
+      if (!/^[A-Z0-9\-_/]{6,40}$/.test(utr)) return bad({ txn_id: "Enter the UTR / transaction ID exactly as shown in your payment app" });
+      if (Object.values(db.teams).some(x => x !== t && x.payment && x.payment.txn_id === utr)) return res({ detail: "This transaction ID has already been submitted. Check it, or contact the organizers." }, 409);
+      t.payment = { method: f.get("method"), txn_id: utr, txn_date: f.get("txn_date"), amount_paid: Number(f.get("amount_paid")).toFixed(2), status: "PENDING", has_proof: !!(file && file.name), submitted_at: new Date().toISOString(), attempt: 1 };
+      t.status = "VERIFICATION_PENDING"; store(db); return res(view(t), 201);
+    }
+  }
+  return res({ detail: "Not found" }, 404);
+};
+})();
+</script>
+<script>(() => {
+const $app = document.getElementById("app");
+const LS = "cv_registration_v1";
+const STEPS = ["Team", "Members", "Review", "Pay", "Proof"];
+let cfg, rid = null, step = 1, errors = {}, busy = false, banner = "", payFields = null;
+let team = { name: "", college: "", track: "", members: [] };
+const blank = () => ({ full_name: "", reg_no: "", email: "", phone: "" });
+
+// ---- tiny DOM helper (text is always set via textContent => no XSS from user input) ----
+function h(tag, attrs = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === false || v == null) continue;
+    if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "class") el.className = v;
+    else if (k in el && k !== "list") try { el[k] = v; } catch { el.setAttribute(k, v); }
+    else el.setAttribute(k, v);
+  }
+  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : document.createTextNode(kid));
+  return el;
+}
+const fee = () => cfg.fee_per_member * team.members.length;
+const inr = n => "₹" + Number(n).toLocaleString("en-IN");
+const save = () => { try { localStorage.setItem(LS, JSON.stringify({ team, rid })); } catch {} };
+const api = async (url, opts) => {
+  const r = await fetch(url, opts); let body = {};
+  try { body = await r.json(); } catch {}
+  if (!r.ok) throw Object.assign(new Error(body.detail || "Something went wrong"), { status: r.status, errors: body.errors || {}, body });
+  return body;
+};
+
+// ---- validation (mirrors the server; the server is the source of truth) ----
+const EMAIL = /^[^\s@]+@([^\s@.]+\.)+[A-Za-z]{2,}$/;
+function validateTeam() {
+  const e = {};
+  if (team.name.trim().length < 2) e.name = "Enter a team name (at least 2 characters)";
+  if (team.college.trim().length < 3) e.college = "Enter your college name";
+  return e;
+}
+function validateMembers() {
+  const e = {}, seen = { reg_no: {}, email: {}, phone: {} };
+  team.members.forEach((m, i) => {
+    const p = `m${i}.`, ph = m.phone.replace(/[\s-]/g, "").replace(/^(\+91|0)/, "");
+    if (m.full_name.trim().length < 2) e[p + "full_name"] = "Enter the full name";
+    if (!/^[A-Za-z0-9/\-_.]{3,40}$/.test(m.reg_no.trim())) e[p + "reg_no"] = "Enter the registration number";
+    if (!EMAIL.test(m.email.trim())) e[p + "email"] = "Enter a valid email address";
+    else if (cfg.college_email_domains.length && !cfg.college_email_domains.some(d => m.email.trim().toLowerCase().endsWith(d))) e[p + "email"] = "Use your college email address";
+    if (!/^[6-9]\d{9}$/.test(ph)) e[p + "phone"] = "Enter a 10-digit mobile number";
+    for (const [k, v] of [["reg_no", m.reg_no.trim().toUpperCase()], ["email", m.email.trim().toLowerCase()], ["phone", ph]]) {
+      if (!v) continue;
+      if (v in seen[k] && !e[p + k]) e[p + k] = "Already used by another member";
+      seen[k][v] = 1;
+    }
+  });
+  if (team.members.length < cfg.min_members) e.count = `Add at least ${cfg.min_members} members (including the leader)`;
+  return e;
+}
+
+// ---- shared UI pieces ----
+function field(label, value, onInput, key, opts = {}) {
+  const id = "f-" + key.replace(/\W/g, "_");
+  return h("div", {},
+    h("label", { for: id }, label),
+    h("input", { id, value, type: opts.type || "text", inputMode: opts.inputMode, autocomplete: opts.autocomplete || "off",
+      placeholder: opts.placeholder || "", max: opts.max, "aria-invalid": errors[key] ? "true" : false,
+      "aria-describedby": errors[key] ? id + "-e" : false, oninput: ev => onInput(ev.target.value) }),
+    errors[key] ? h("div", { class: "field-err", id: id + "-e" }, errors[key]) : null);
+}
+const stepper = () => h("ol", { class: "steps", "aria-label": "Progress" },
+  STEPS.map((s, i) => h("li", { class: i + 1 < step ? "done" : i + 1 === step ? "on" : "", "aria-current": i + 1 === step ? "step" : false }, s)));
+const bar = (...btns) => h("div", { class: "bar" }, h("div", {}, ...btns));
+const bannerEl = () => banner ? h("div", { class: "banner err", role: "alert" }, banner) : null;
+function copyBtn(text, label) {
+  const b = h("button", { class: "btn ghost small", type: "button", "aria-label": "Copy " + label, onclick: async () => {
+    try { await navigator.clipboard.writeText(text); }
+    catch { const t = h("textarea", { value: text }); document.body.append(t); t.select(); document.execCommand("copy"); t.remove(); }
+    b.textContent = "Copied"; setTimeout(() => b.textContent = "Copy", 1500);
+  } }, "Copy");
+  return b;
+}
+const copyRow = (label, value) => h("div", { class: "copyrow" }, h("div", {}, h("small", {}, label), h("code", {}, value)), copyBtn(value, label));
+
+// ---- screens ----
+function screenTeam() {
+  return [
+    h("h2", {}, "Create your team"),
+    h("p", { class: "muted" }, `Teams have ${cfg.min_members} to ${cfg.max_members} members. The person filling this form is the Team Leader — you'll enter your own details first.`),
+    h("div", { class: "card" },
+      field("Team name", team.name, v => team.name = v, "name", { placeholder: "e.g. Byte Me" }),
+      field("College / institute", team.college, v => team.college = v, "college", { autocomplete: "organization" }),
+      field("Track or domain (optional)", team.track, v => team.track = v, "track")),
+    bar(h("button", { class: "btn", onclick: () => go(2, validateTeam) }, "Continue to members"))];
+}
+
+function screenMembers() {
+  const n = team.members.length;
+  const cards = team.members.map((m, i) => {
+    const p = `m${i}.`, leader = i === 0;
+    return h("section", { class: "card" + (leader ? " leader" : ""), "aria-label": leader ? "Team Leader" : "Member " + (i + 1) },
+      h("div", { class: "card-head" }, h("h3", {}, leader ? "Team Leader (you)" : "Member " + (i + 1)),
+        leader ? h("span", { class: "tag" }, "Leader") :
+          h("button", { class: "btn danger small", type: "button", disabled: n <= cfg.min_members, title: n <= cfg.min_members ? `Teams need at least ${cfg.min_members} members` : "", onclick: () => { team.members.splice(i, 1); errors = {}; render(); } }, "Remove")),
+      field("Full name", m.full_name, v => m.full_name = v, p + "full_name", { autocomplete: leader ? "name" : "off" }),
+      field("Registration number", m.reg_no, v => m.reg_no = v, p + "reg_no"),
+      field("College email", m.email, v => m.email = v, p + "email", { type: "email", inputMode: "email", autocomplete: leader ? "email" : "off" }),
+      field("Phone number", m.phone, v => m.phone = v, p + "phone", { type: "tel", inputMode: "tel", autocomplete: leader ? "tel" : "off", placeholder: "10-digit mobile" }));
+  });
+  return [
+    h("h2", {}, "Add your members"),
+    h("div", { class: "count" }, h("span", { class: "muted" }, `Required: ${cfg.min_members}–${cfg.max_members} members including the leader`), h("b", {}, `${n} / ${cfg.max_members}`)),
+    h("div", { class: "banner info" }, `Fee: ${inr(cfg.fee_per_member)} per member × ${n} = `, h("b", {}, inr(fee())), ". One payment for the whole team, after you review."),
+    errors.count ? h("div", { class: "banner err", role: "alert" }, errors.count) : null, bannerEl(),
+    ...cards,
+    n < cfg.max_members ? h("button", { class: "btn ghost", type: "button", style: "width:100%", onclick: () => { team.members.push(blank()); errors = {}; render(); } }, `+ Add member (${n + 1} of ${cfg.max_members})`) : h("p", { class: "muted" }, "Maximum team size reached."),
+    bar(h("button", { class: "btn ghost", onclick: () => go(1) }, "Back"), h("button", { class: "btn", onclick: () => go(3, validateMembers) }, "Review details"))];
+}
+
+function screenReview() {
+  return [
+    h("h2", {}, "Review your details"),
+    h("p", { class: "muted" }, "Check everything now. Your registration ID and payment step come next."),
+    bannerEl(),
+    h("div", { class: "card" }, h("dl", {}, h("dt", {}, "Team"), h("dd", {}, team.name), h("dt", {}, "College"), h("dd", {}, team.college),
+      team.track ? [h("dt", {}, "Track"), h("dd", {}, team.track)] : null, h("dt", {}, "Members"), h("dd", {}, `${team.members.length} (including leader)`),
+      h("dt", {}, "Fee"), h("dd", {}, `${inr(fee())} (${inr(cfg.fee_per_member)} × ${team.members.length} members)`))),
+    ...team.members.map((m, i) => h("div", { class: "card" }, h("h3", {}, i === 0 ? "Team Leader" : "Member " + (i + 1)),
+      h("dl", {}, h("dt", {}, "Name"), h("dd", {}, m.full_name), h("dt", {}, "Reg. no."), h("dd", {}, m.reg_no.toUpperCase()), h("dt", {}, "Email"), h("dd", {}, m.email), h("dt", {}, "Phone"), h("dd", {}, m.phone)))),
+    bar(h("button", { class: "btn ghost", onclick: () => go(2) }, "Edit"), h("button", { class: "btn", disabled: busy, onclick: createTeam }, busy ? "Saving…" : "Confirm and go to payment"))];
+}
+
+function screenPay() {
+  const b = cfg.payment.bank, u = cfg.payment.upi;
+  return [
+    h("h2", {}, "Pay the registration fee"),
+    h("div", { class: "banner info" }, `Your registration ID is ${rid}. It is saved, but your spot is only confirmed after we verify your payment.`),
+    h("div", { class: "card" }, h("div", { class: "muted" }, "Amount to pay"), h("div", { class: "amount" }, inr(fee())), h("div", { class: "muted" }, `${inr(cfg.fee_per_member)} × ${team.members.length} members. ${cfg.fee_note}: pay this total once, from any one account.`)),
+    h("section", { class: "card", "aria-label": "Pay by UPI" }, h("h3", {}, "Option 1: UPI"),
+      h("img", { class: "qr", src: u.qr_url, alt: "UPI QR code. Scan with any UPI app." }),
+      h("p", { class: "muted", style: "text-align:center" }, "Scan with any UPI app, or pay to this UPI ID"), copyRow("UPI ID", u.upi_id)),
+    h("section", { class: "card", "aria-label": "Pay by bank transfer" }, h("h3", {}, "Option 2: Bank transfer"),
+      copyRow("Account holder", b.account_holder), copyRow("Bank", b.bank_name), copyRow("Account number", b.account_number), copyRow("IFSC code", b.ifsc)),
+    h("div", { class: "card" }, h("h3", {}, "After you pay, keep these ready"),
+      h("ul", { class: "check" }, h("li", {}, "Transaction ID / UTR number (shown in your payment app)"), h("li", {}, "Date of payment and amount paid"), h("li", {}, "A screenshot of the payment (optional, but speeds up verification)")),
+      h("p", { class: "muted" }, "We never ask for your UPI PIN, OTP, card details or bank password. Do not share them with anyone.")),
+    bar(h("button", { class: "btn", onclick: () => go(5) }, "I've paid — enter details"))];
+}
+
+function screenProof() {
+  const f = payFields ||= { method: "UPI", txn_id: "", txn_date: new Date().toISOString().slice(0, 10), amount_paid: String(fee()) };
+  const fileInput = h("input", { type: "file", id: "proof", accept: "image/png,image/jpeg,application/pdf" });
+  return [
+    h("h2", {}, "Enter your payment details"),
+    h("p", { class: "muted" }, `Registration ID: ${rid}`), bannerEl(),
+    h("div", { class: "card" },
+      h("label", {}, "Payment method"),
+      h("div", { class: "seg", role: "radiogroup" }, ["UPI", "BANK_TRANSFER"].map(m => h("label", {}, h("input", { type: "radio", name: "method", value: m, checked: f.method === m, onchange: () => f.method = m }), m === "UPI" ? "UPI" : "Bank transfer"))),
+      field("Transaction ID / UTR number", f.txn_id, v => f.txn_id = v, "txn_id", { placeholder: "e.g. 412345678901", autocomplete: "off" }),
+      field("Transaction date", f.txn_date, v => f.txn_date = v, "txn_date", { type: "date", max: new Date().toISOString().slice(0, 10) }),
+      field("Amount paid (₹)", f.amount_paid, v => f.amount_paid = v, "amount_paid", { type: "number", inputMode: "decimal" }),
+      h("label", { for: "proof" }, "Payment screenshot (optional)"), fileInput,
+      errors.proof ? h("div", { class: "field-err" }, errors.proof) : h("div", { class: "muted" }, `PNG, JPG or PDF, up to ${cfg.max_proof_mb} MB`)),
+    bar(h("button", { class: "btn ghost", onclick: () => go(4) }, "Back"), h("button", { class: "btn", disabled: busy, onclick: () => submitPayment(fileInput) }, busy ? "Submitting…" : "Submit registration"))];
+}
+
+function screenDone(t) {
+  const p = t.payment, status = t.status === "CONFIRMED" ? ["Payment verified", "ok"] : t.status === "PAYMENT_REJECTED" ? ["Payment rejected", "bad"] : ["Pending verification", ""];
+  return [
+    h("header", { class: "top" }, h("b", {}, "CodeVerse Hackathon")),
+    h("h1", {}, t.status === "CONFIRMED" ? "You're registered" : "Registration submitted successfully"),
+    h("div", { class: "card" }, h("div", { class: "muted" }, "Registration ID — save this"), h("div", { class: "rid" }, t.registration_id), copyBtn(t.registration_id, "registration ID")),
+    h("div", { class: "card" }, h("dl", {}, h("dt", {}, "Team"), h("dd", {}, t.team_name), h("dt", {}, "Team leader"), h("dd", {}, t.leader), h("dt", {}, "Members"), h("dd", {}, String(t.member_count)),
+      h("dt", {}, "Payment"), h("dd", {}, h("span", { class: "status " + status[1] }, status[0])),
+      p ? [h("dt", {}, "UTR / ID"), h("dd", {}, p.txn_id), h("dt", {}, "Amount"), h("dd", {}, inr(p.amount_paid))] : null)),
+    t.status === "PAYMENT_REJECTED" ? h("div", { class: "banner err" }, `Reason: ${p?.admin_note || "Please check your transaction details."} `, h("a", { href: "#/pay/" + t.registration_id }, "Resubmit payment details")) : null,
+    t.status === "VERIFICATION_PENDING" ? h("p", { class: "muted" }, "We'll verify your payment against our bank records. Keep your registration ID — you can reopen this page any time to check the status.") : null,
+    h("button", { class: "btn ghost", onclick: () => { location.hash = ""; location.reload(); } }, "Register another team")];
+}
+
+// ---- actions ----
+function go(n, validator) {
+  banner = ""; if (validator) { errors = validator(); if (Object.keys(errors).length) { render(); focusError(); return; } }
+  errors = {}; if (n === 2 && !team.members.length) team.members = [blank(), blank(), blank(), blank()];
+  step = n; save(); render(); window.scrollTo(0, 0);
+}
+function focusError() { setTimeout(() => (document.querySelector("[aria-invalid=true]") || document.querySelector(".banner.err"))?.scrollIntoView({ block: "center" }), 0); }
+
+async function createTeam() {
+  if (rid) return go(4);                     // already created (e.g. user pressed Back); don't create a duplicate
+  busy = true; banner = ""; render();
+  try {
+    const t = await api("/api/registrations", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(team) });
+    rid = t.registration_id; save(); busy = false; go(4);
+  } catch (e) {
+    busy = false;
+    if (e.status === 409) { errors = { name: e.message }; step = 1; }
+    else if (e.status === 422) { banner = Object.values(e.errors).join(" • ") || e.message; }
+    else banner = "We couldn't reach the server. Check your connection and try again.";
+    render(); focusError();
+  }
+}
+
+async function submitPayment(fileInput) {
+  const f = payFields; errors = {}; banner = "";
+  if (!/^[A-Za-z0-9\-_/]{6,40}$/.test(f.txn_id.trim())) errors.txn_id = "Enter the UTR / transaction ID exactly as shown in your payment app";
+  if (!f.txn_date) errors.txn_date = "Enter the date you paid";
+  if (!(Number(f.amount_paid) > 0)) errors.amount_paid = "Enter the amount you paid";
+  const file = fileInput.files[0];
+  if (file && file.size > cfg.max_proof_mb * 1048576) errors.proof = `File is larger than ${cfg.max_proof_mb} MB`;
+  if (Object.keys(errors).length) { render(); focusError(); return; }
+  const fd = new FormData();
+  for (const k of ["method", "txn_id", "txn_date", "amount_paid"]) fd.append(k, f[k]);
+  if (file) fd.append("proof", file);
+  busy = true; render();
+  try {
+    await api(`/api/registrations/${rid}/payment`, { method: "POST", body: fd });
+    try { localStorage.removeItem(LS); } catch {}
+    busy = false; location.hash = "#/confirmation/" + rid;
+  } catch (e) {
+    busy = false; errors = e.errors || {};
+    banner = e.status === 409 || e.status === 413 || !Object.keys(errors).length ? e.message : "";
+    render(); focusError();
+  }
+}
+
+// ---- routing / render ----
+async function render() {
+  const m = location.hash.match(/^#\/(confirmation|pay)\/([A-Z0-9-]+)$/i);
+  if (m && m[1] === "confirmation") {
+    try { $app.replaceChildren(...screenDone(await api("/api/registrations/" + m[2]))); } catch (e) { $app.replaceChildren(h("div", { class: "banner err" }, e.message)); }
+    return;
+  }
+  if (m && m[1] === "pay") { rid = m[2].toUpperCase(); step = 5; }
+  const screens = { 1: screenTeam, 2: screenMembers, 3: screenReview, 4: screenPay, 5: screenProof };
+  const active = document.activeElement?.id;
+  $app.replaceChildren(h("header", { class: "top" }, h("b", {}, "CodeVerse Hackathon"), h("div", { class: "muted" }, "Team registration")), stepper(), ...screens[step]());
+  if (active) document.getElementById(active)?.focus();
+}
+
+async function boot() {
+  try { cfg = await api("/api/config"); } catch { $app.replaceChildren(h("div", { class: "banner err" }, "Registration is unavailable right now. Please try again shortly.")); return; }
+  try { const s = JSON.parse(localStorage.getItem(LS) || "null"); if (s) { team = s.team; rid = s.rid; if (rid) step = 4; } } catch {}
+  addEventListener("hashchange", render); render();
+}
+boot();
+})();
+</script></body></html>
