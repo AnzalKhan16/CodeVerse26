@@ -13,6 +13,7 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="print.css">
 </head>
 
 <body>
@@ -1066,6 +1067,56 @@
       <span>🔒 Official Gateway Verified via Indian Bank (IDIB000V143) • Metaversity Club © 2026</span>
     </div>
   </footer>
+
+  <!-- Printable Receipt (Hidden on Screen, Visible on Print) -->
+  <div id="printable-receipt-wrapper" class="printable-only">
+    <div class="print-receipt-container">
+      <div class="print-header">
+        <h1 class="print-hackathon-name">CodeVerse 2.0</h1>
+        <p class="print-subtitle">Official Registration Receipt</p>
+      </div>
+      
+      <div class="print-meta-grid">
+        <div class="print-meta-item">
+          <span class="print-label">Registration ID:</span>
+          <strong class="print-value" id="print-reg-id"></strong>
+        </div>
+        <div class="print-meta-item">
+          <span class="print-label">Team Name:</span>
+          <strong class="print-value" id="print-team-name"></strong>
+        </div>
+        <div class="print-meta-item">
+          <span class="print-label">Submitted On:</span>
+          <strong class="print-value" id="print-date"></strong>
+        </div>
+        <div class="print-meta-item">
+          <span class="print-label">Verification Status:</span>
+          <strong class="print-value">Pending Verification</strong>
+        </div>
+      </div>
+
+      <div class="print-members-section">
+        <h3 class="print-section-title">Squad Roster</h3>
+        <table class="print-members-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Name</th>
+              <th>Registration No.</th>
+            </tr>
+          </thead>
+          <tbody id="print-members-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="print-footer-msg">
+        <p>Thank you for registering for CodeVerse 2.0! We are thrilled to welcome your squad to the hackathon.</p>
+        <p>Please keep this receipt handy. You will need to show it at the registration desk for offline verification and entry at the venue.</p>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

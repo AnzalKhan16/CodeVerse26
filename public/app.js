@@ -929,6 +929,32 @@ function populateReceipt(team, paymentInfo) {
     statusBadge.textContent = 'Payment Pending / Verification Pending';
     statusBadge.className = 'status-value status-pending';
   }
+
+  // Populate Printable Receipt
+  const printRegId = document.getElementById('print-reg-id');
+  if (printRegId) {
+    printRegId.textContent = regId;
+    document.getElementById('print-team-name').textContent = team.team_name || team.teamName;
+    document.getElementById('print-date').textContent = new Date().toLocaleString('en-IN', {
+      dateStyle: 'medium',
+      timeStyle: 'short'
+    });
+
+    const tbody = document.getElementById('print-members-tbody');
+    if (tbody && team.members) {
+      tbody.innerHTML = '';
+      team.members.forEach(member => {
+        const isLeader = member.is_leader || member.isLeader;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${isLeader ? '<strong>Leader</strong>' : 'Member'}</td>
+          <td>${member.full_name || member.fullName}</td>
+          <td style="font-family: monospace;">${member.reg_number || member.regNumber}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
 }
 
 /**
