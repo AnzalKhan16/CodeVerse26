@@ -1177,14 +1177,19 @@ async function handleLookupEdit() {
     document.getElementById('edit-project-title').value = team.project_title || team.projectTitle || '';
 
     // Leader Details
-    const leader = team.leader || (team.members && team.members.find(m => m.is_leader || m.isLeader)) || {};
+    const leader = team.leader || (team.members && team.members.find(m => m.is_leader === true || m.isLeader === true)) || (team.members && team.members[0]) || {};
     document.getElementById('edit-leader-name').value = leader.full_name || leader.fullName || '';
     document.getElementById('edit-leader-reg').value = leader.reg_number || leader.regNumber || '';
     document.getElementById('edit-leader-email').value = leader.college_email || leader.collegeEmail || '';
     document.getElementById('edit-leader-phone').value = leader.phone || '';
 
     // Additional Members (Filter OUT leader so leader isn't duplicated)
-    const nonLeaderMembers = (team.members || []).filter(m => !(m.is_leader || m.isLeader));
+    const leaderEmailMatch = (leader.college_email || leader.collegeEmail || '').toLowerCase();
+    const nonLeaderMembers = (team.members || []).filter(m => {
+      const email = (m.college_email || m.collegeEmail || '').toLowerCase();
+      return email !== leaderEmailMatch;
+    });
+
     editState.members = nonLeaderMembers.map((m, idx) => ({
       id: `edit_mem_${idx + 1}`,
       fullName: m.full_name || m.fullName || '',
@@ -1270,7 +1275,7 @@ function renderEditMembers() {
       const key = e.target.getAttribute('data-key');
       const member = editState.members.find(m => m.id === memberId);
       if (member) {
-        member[key] = e.target.value.trim();
+        member[key] = e.target.value;
       }
     });
   });

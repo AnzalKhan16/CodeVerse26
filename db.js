@@ -36,7 +36,7 @@ function mapMember(row) {
     regNumber: row.reg_number,
     collegeEmail: row.college_email,
     phone: row.phone,
-    isLeader: Boolean(row.is_leader),
+    isLeader: row.is_leader === true || row.is_leader === 'true' || row.is_leader === 1,
     createdAt: row.created_at
   };
 }
