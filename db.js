@@ -11,6 +11,53 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Helper functions to map Supabase snake_case to app camelCase
+function mapTeam(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    registrationId: row.registration_id,
+    teamName: row.team_name,
+    track: row.track,
+    projectTitle: row.project_title,
+    memberCount: row.member_count,
+    status: row.status,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  };
+}
+
+function mapMember(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    teamId: row.team_id,
+    fullName: row.full_name,
+    regNumber: row.reg_number,
+    collegeEmail: row.college_email,
+    phone: row.phone,
+    isLeader: Boolean(row.is_leader),
+    createdAt: row.created_at
+  };
+}
+
+function mapPayment(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    teamId: row.team_id,
+    registrationId: row.registration_id,
+    paymentMethod: row.payment_method,
+    utrNumber: row.utr_number,
+    transactionDate: row.transaction_date,
+    amountPaid: row.amount_paid,
+    proofFilePath: row.proof_file_path,
+    status: row.status,
+    adminNotes: row.admin_notes,
+    submittedAt: row.submitted_at
+  };
+}
+
 function generateRegistrationId() {
   const randomDigits = Math.floor(10000 + Math.random() * 90000);
   return `CV26-TM-${randomDigits}`;
@@ -89,11 +136,12 @@ async function getTeamByRegistrationId(registrationId) {
   const { data: members } = await supabase.from('team_members').select('*').eq('team_id', team.id).order('is_leader', { ascending: false }).order('created_at', { ascending: true });
   const { data: payment } = await supabase.from('payments').select('*').eq('team_id', team.id).limit(1).maybeSingle();
 
+  const mappedMembers = (members || []).map(mapMember);
   return {
-    ...team,
-    members: (members || []).map(m => ({ ...m, isLeader: Boolean(m.is_leader) })),
-    leader: (members || []).find(m => m.is_leader) || (members || [])[0] || null,
-    payment: payment || null
+    ...mapTeam(team),
+    members: mappedMembers,
+    leader: mappedMembers.find(m => m.isLeader) || mappedMembers[0] || null,
+    payment: mapPayment(payment)
   };
 }
 
@@ -221,15 +269,16 @@ async function getAllTeams({ status = 'ALL', search = '', onlyCompleted = true }
 
     const { data: members } = await supabase.from('team_members').select('*').eq('team_id', teamData.id).order('is_leader', { ascending: false }).order('created_at', { ascending: true });
     
+    const mappedMembers = (members || []).map(mapMember);
     teams.push({
-      ...teamData,
-      payment: paymentObj || null,
-      members: (members || []).map(m => ({ ...m, isLeader: Boolean(m.is_leader) })),
-      leader: (members || []).find(m => m.is_leader) || (members || [])[0] || null
+      ...mapTeam(teamData),
+      payment: mapPayment(paymentObj),
+      members: mappedMembers,
+      leader: mappedMembers.find(m => m.isLeader) || mappedMembers[0] || null
     });
   }
 
-  return teams.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  return teams.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
 async function updatePaymentStatus({ registrationId, status, adminNotes = '', verifiedBy = 'Admin' }) {
