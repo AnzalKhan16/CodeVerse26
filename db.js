@@ -223,7 +223,7 @@ async function submitPayment({ registrationId, paymentMethod, utrNumber, transac
   } else {
     const { error: insertError } = await supabase.from('payments').insert([{
       team_id: team.id,
-      registration_id: team.registration_id,
+      registration_id: team.registrationId,
       payment_method: paymentMethod,
       utr_number: utrNumber.trim(),
       transaction_date: transactionDate || now.split('T')[0],
