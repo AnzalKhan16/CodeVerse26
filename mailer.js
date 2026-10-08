@@ -12,14 +12,31 @@ const transporter = nodemailer.createTransport({
 async function sendViaAppsScript(to, subject, html) {
   try {
     console.log('Sending email via Google Apps Script Webhook...');
-    const response = await fetch(process.env.GOOGLE_SCRIPT_URL, {
+    
+    let targetUrl = process.env.GOOGLE_SCRIPT_URL;
+    let response = await fetch(targetUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ to, subject, html })
+      body: JSON.stringify({ to, subject, html }),
+      redirect: 'manual' // Prevent fetch from changing POST to GET on 302 redirect
     });
-    
+
+    // Handle Google's 302 redirect manually to keep it as a POST
+    if (response.status === 302 || response.status === 301 || response.status === 303) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ to, subject, html })
+        });
+      }
+    }
+
     // We expect the script to return plain text or JSON
     const text = await response.text();
     let result;
@@ -27,7 +44,7 @@ async function sendViaAppsScript(to, subject, html) {
       result = JSON.parse(text);
     } catch(e) {
       // If it's not JSON, just check if the text says success
-      if (text.includes('success')) {
+      if (text.toLowerCase().includes('success')) {
         return true;
       }
       console.error('Apps script returned non-JSON:', text);
