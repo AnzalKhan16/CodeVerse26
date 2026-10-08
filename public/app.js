@@ -168,7 +168,7 @@ function restoreSessionState() {
       if (input) input.value = formData.editRegId;
       
       // Auto trigger lookup, then apply saved inputs!
-      handleLookupEdit().then(() => {
+      handleLookupEdit(true).then(() => {
         // After lookup is complete and form is built, apply saved values
         document.querySelectorAll('#form-edit-team input, #form-edit-team select').forEach(el => {
           if (el.id && formData[el.id] !== undefined) {
@@ -1254,7 +1254,7 @@ function closeEditModal() {
   editState.members = [];
 }
 
-async function handleLookupEdit() {
+async function handleLookupEdit(isRestoring = false) {
   const input = document.getElementById('edit-search-input');
   const lookupBtn = document.getElementById('btn-lookup-edit');
   const form = document.getElementById('form-edit-team');
@@ -1342,6 +1342,11 @@ async function handleLookupEdit() {
     }));
 
     renderEditMembers();
+    
+    if (!isRestoring) {
+      setTimeout(saveSessionState, 100);
+    }
+    
     showToast(`Loaded details for "${teamNameValue}". You can make updates now.`, 'info');
 
   } catch (err) {
