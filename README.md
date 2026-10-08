@@ -1,14 +1,14 @@
-# CodeVerse Hackathon 2026 — Team Registration & Payment Module
+# CodeVerse 2.0 — Team Registration & Payment Module
 
-Welcome to the **CodeVerse Hackathon** official Team Registration and Payment Verification system.
+Welcome to the **CodeVerse 2.0** official Team Registration and Payment Verification system.
 
 ---
 
 ## 🌟 Key Features
 
-### 1. Team Registration Wizard (4–6 Members)
+### 1. Team Registration Wizard (Exactly 4 Members)
 * **Team Leader First**: The Team Leader enters their details first as the designated primary contact person.
-* **Strict 4–6 Member Rule**: Real-time counter badge and dynamic Add/Remove member controls enforce the hackathon requirement of **minimum 4 members** and **maximum 6 members** in total.
+* **Strict 4 Member Rule**: Real-time counter badge and dynamic Add/Remove member controls enforce the hackathon requirement of **exactly 4 members**.
 * **Per-Member Data Collection**:
   * Full Name
   * College Registration Number / Roll No.
@@ -18,8 +18,8 @@ Welcome to the **CodeVerse Hackathon** official Team Registration and Payment Ve
 
 ### 2. Dual Payment Methods & Dynamic UPI QR
 * **UPI**:
-  * Generated on-the-fly scannable QR code (`upi://pay?...`) with pre-filled amount (₹600) and payee details.
-  * UPI ID (`codeverse26@hdfcbank`) with 1-click clipboard copy and tooltip feedback.
+  * Generated on-the-fly scannable QR code (`upi://pay?...`) with pre-filled amount (₹400) and payee details.
+  * UPI ID with 1-click clipboard copy and tooltip feedback.
 * **Bank Transfer (NEFT / IMPS / RTGS)**:
   * Account Holder Name, Bank Name, Account Number, IFSC Code, Branch, and Account Type with 1-click copy buttons.
 * **Zero-Credential Security Guarantee**: Prominently informs students that passwords, PINs, or OTPs are **never** requested.
@@ -38,7 +38,7 @@ Welcome to the **CodeVerse Hackathon** official Team Registration and Payment Ve
 ### 4. Admin & Organizer Dashboard (`/admin.html`)
 * **Real-time Metrics**: Total Teams, Pending Verification, Verified Teams, Rejected Teams, and Total Verified Revenue.
 * **Live Search & Filter**: Instant filtering by status (`PENDING_VERIFICATION`, `VERIFIED`, `REJECTED`, `PENDING_PAYMENT`) and search by Team Name, Registration ID, or UTR.
-* **Team Inspection Modal**: Deep-dive view of full rosters (all 4–6 member details), transaction references, and zoomable proof screenshot preview lightbox.
+* **Team Inspection Modal**: Deep-dive view of full rosters (all 4 member details), transaction references, and zoomable proof screenshot preview lightbox.
 * **One-Click Decision Updates**: Mark teams as `Verified` or `Rejected` with organizer audit notes.
 * **CSV Export**: One-click download of the complete roster and payment ledger formatted for Excel.
 * **Seed Demo Data**: Convenient button to populate test teams for demonstration.
