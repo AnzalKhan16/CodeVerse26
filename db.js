@@ -170,9 +170,10 @@ async function submitPayment({ registrationId, paymentMethod, utrNumber, transac
     };
     if (proofFilePath) updateData.proof_file_path = proofFilePath;
 
-    await supabase.from('payments').update(updateData).eq('id', existingPayment.id);
+    const { error: updateError } = await supabase.from('payments').update(updateData).eq('id', existingPayment.id);
+    if (updateError) throw new Error('Failed to update payment: ' + updateError.message);
   } else {
-    await supabase.from('payments').insert([{
+    const { error: insertError } = await supabase.from('payments').insert([{
       team_id: team.id,
       registration_id: team.registration_id,
       payment_method: paymentMethod,
@@ -182,9 +183,12 @@ async function submitPayment({ registrationId, paymentMethod, utrNumber, transac
       proof_file_path: proofFilePath || null,
       status: 'PENDING'
     }]);
+    if (insertError) throw new Error('Failed to insert payment: ' + insertError.message);
   }
 
-  await supabase.from('teams').update({ status: 'PENDING_VERIFICATION', updated_at: now }).eq('id', team.id);
+  const { error: teamUpdateError } = await supabase.from('teams').update({ status: 'PENDING_VERIFICATION', updated_at: now }).eq('id', team.id);
+  if (teamUpdateError) throw new Error('Failed to update team status: ' + teamUpdateError.message);
+
   return await getTeamByRegistrationId(registrationId);
 }
 
