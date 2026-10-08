@@ -107,6 +107,8 @@ app.get('/api/config', async (req, res) => {
 
     const editDeadline = await db.getEditDeadline();
     const isEditDeadlinePassed = await db.isEditDeadlinePassed();
+    const registrationDeadline = await db.getRegistrationDeadline();
+    const isRegistrationDeadlinePassed = await db.isRegistrationDeadlinePassed();
 
     res.json({
       success: true,
@@ -114,6 +116,8 @@ app.get('/api/config', async (req, res) => {
         ...HACKATHON_CONFIG,
         editDeadline,
         isEditDeadlinePassed,
+        registrationDeadline,
+        isRegistrationDeadlinePassed,
         upiDetails: {
           ...HACKATHON_CONFIG.upiDetails,
           qrCodeDataUrl: qrDataUrl

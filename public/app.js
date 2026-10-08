@@ -158,7 +158,12 @@ function restoreSessionState() {
     
     // 4. Restore Step
     if (formData.currentStep && formData.currentStep >= 1 && formData.currentStep < 6) {
-      goToStep(formData.currentStep);
+      if (state.hackathonConfig && state.hackathonConfig.isRegistrationDeadlinePassed) {
+        // Do not restore step if registration is closed
+        sessionStorage.removeItem('codeverse_reg_state');
+      } else {
+        goToStep(formData.currentStep);
+      }
     }
 
     // 5. Restore Edit Modal
@@ -242,6 +247,42 @@ function applyConfigToUI(config) {
     if (ifscEl) ifscEl.textContent = config.bankDetails.ifscCode;
     if (branchEl) branchEl.textContent = config.bankDetails.branch;
     if (typeEl) typeEl.textContent = config.bankDetails.accountType;
+  }
+
+  // Handle Registration Deadline
+  if (config.isRegistrationDeadlinePassed) {
+    const proceedBtn = document.getElementById('proceed-to-register-btn');
+    const checkboxLabel = document.querySelector('.custom-checkbox-label');
+    const actionsContainer = document.querySelector('.form-actions');
+    const instructionsList = document.querySelector('#instructions-gate .form-grid');
+
+    if (proceedBtn) proceedBtn.style.display = 'none';
+    if (checkboxLabel) checkboxLabel.style.display = 'none';
+    if (instructionsList) instructionsList.style.display = 'none';
+    
+    // Update the step header
+    const stepTitle = document.querySelector('#instructions-gate .step-title');
+    const stepDesc = document.querySelector('#instructions-gate .step-desc');
+    if (stepTitle) stepTitle.textContent = '🚫 Registrations Are Closed';
+    if (stepDesc) stepDesc.textContent = '';
+
+    if (actionsContainer) {
+      actionsContainer.innerHTML = '';
+      const closedMsg = document.createElement('div');
+      closedMsg.style.cssText = 'text-align:center; padding:30px 20px; background:rgba(255,70,70,0.1); border:1px solid rgba(255,70,70,0.3); border-radius:12px; width:100%;';
+      closedMsg.innerHTML = `
+        <div style="font-size:3rem; margin-bottom:12px;">⛔</div>
+        <h3 style="color:#ff4646; margin-bottom:10px; font-size:1.3rem;">Registration Deadline Has Passed</h3>
+        <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.6;">
+          We are no longer accepting new team registrations for CodeVerse 2.0.<br>
+          If you have already registered, you can still check your registration status or edit your team details (if the edit window is open).
+        </p>
+        <p style="margin-top:15px; color:var(--text-muted); font-size:0.85rem;">
+          For any queries, contact: <strong style="color:var(--text-main);">+91 99563 61794</strong>
+        </p>
+      `;
+      actionsContainer.appendChild(closedMsg);
+    }
   }
 }
 
