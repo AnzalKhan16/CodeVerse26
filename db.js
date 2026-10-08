@@ -289,8 +289,8 @@ async function updatePaymentStatus({ registrationId, status, adminNotes = '', ve
   if (!payment) throw new Error('No payment record found for this team.');
 
   const now = new Date().toISOString();
-  let paymentStatus = status === 'Verified' ? 'VERIFIED' : status === 'Rejected' ? 'REJECTED' : 'PENDING';
-  let teamStatus = status === 'Verified' ? 'VERIFIED' : status === 'Rejected' ? 'REJECTED' : 'PENDING_VERIFICATION';
+  let paymentStatus = status.toUpperCase() === 'VERIFIED' ? 'VERIFIED' : status.toUpperCase() === 'REJECTED' ? 'REJECTED' : 'PENDING';
+  let teamStatus = status.toUpperCase() === 'VERIFIED' ? 'VERIFIED' : status.toUpperCase() === 'REJECTED' ? 'REJECTED' : 'PENDING_VERIFICATION';
 
   await supabase.from('payments').update({
     status: paymentStatus,

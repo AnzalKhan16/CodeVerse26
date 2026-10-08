@@ -518,10 +518,10 @@ app.post('/api/admin/verify', requireAdminAuth, async (req, res) => {
     // Send status email to the team leader (member[0] or updatedTeam.leader)
     const upperStatus = status.toUpperCase();
     if (upperStatus === 'VERIFIED' || upperStatus === 'REJECTED') {
-      // The database returns the column as `college_email`
+      // The database returns the column as `collegeEmail`
       const leaderEmail = updatedTeam.leader 
-        ? updatedTeam.leader.college_email 
-        : (updatedTeam.members && updatedTeam.members.length > 0 ? updatedTeam.members[0].college_email : null);
+        ? updatedTeam.leader.collegeEmail 
+        : (updatedTeam.members && updatedTeam.members.length > 0 ? updatedTeam.members[0].collegeEmail : null);
         
       if (leaderEmail) {
         // We don't await this so it doesn't block the API response
