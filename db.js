@@ -399,7 +399,9 @@ async function getEditDeadline() {
 }
 
 async function setEditDeadline(isoDateString) {
-  await setSetting('edit_deadline', isoDateString || '');
+  const val = isoDateString || '';
+  await setSetting('edit_deadline', val);
+  return val;
 }
 
 async function isEditDeadlinePassed() {
