@@ -65,6 +65,113 @@ async function initApp() {
   if (payDateInput) {
     payDateInput.value = new Date().toISOString().split('T')[0];
   }
+
+  // Restore session state
+  restoreSessionState();
+
+  // Bind auto-save listeners
+  document.addEventListener('input', () => setTimeout(saveSessionState, 100));
+  document.addEventListener('change', () => setTimeout(saveSessionState, 100));
+}
+
+/**
+ * Auto-Save & Restore Session State to prevent data loss on refresh
+ */
+function saveSessionState() {
+  if (state.currentStep === 6) return; // Don't save receipt state
+  
+  const formData = {};
+  formData.currentStep = state.currentStep;
+  formData.memberCount = state.teamDraft.members.length;
+  
+  // Track OTP verification
+  const sendBtn = document.getElementById('btn-send-otp');
+  formData.otpVerified = sendBtn && sendBtn.disabled && sendBtn.textContent.includes('Verified');
+
+  // Edit Modal State
+  const editModal = document.getElementById('edit-modal');
+  if (editModal && !editModal.classList.contains('hidden')) {
+    formData.isEditModalOpen = true;
+    formData.editRegId = document.getElementById('edit-search-input')?.value || '';
+  }
+  
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    if (el.id && el.type !== 'file' && el.type !== 'submit' && el.type !== 'button') {
+      formData[el.id] = el.value;
+    }
+  });
+  
+  sessionStorage.setItem('codeverse_reg_state', JSON.stringify(formData));
+}
+
+function restoreSessionState() {
+  const savedStr = sessionStorage.getItem('codeverse_reg_state');
+  if (!savedStr) return;
+  
+  try {
+    const formData = JSON.parse(savedStr);
+    
+    // 1. Restore Member Count
+    if (formData.memberCount) {
+      while(state.teamDraft.members.length < formData.memberCount) {
+        state.teamDraft.members.push({ id: `mem_${state.teamDraft.members.length + 1}`, fullName: '', regNumber: '', collegeEmail: '', phone: '' });
+      }
+      while(state.teamDraft.members.length > formData.memberCount) {
+        state.teamDraft.members.pop();
+      }
+      renderMembers();
+      updateMemberCounter();
+    }
+    
+    // 2. Restore DOM Values (for static elements)
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      if (el.id && formData[el.id] !== undefined && el.type !== 'file') {
+        el.value = formData[el.id];
+      }
+    });
+
+    // 3. Restore OTP verification
+    if (formData.otpVerified) {
+      const emailInput = document.getElementById('leader-email');
+      const sendBtn = document.getElementById('btn-send-otp');
+      const otpSection = document.getElementById('otp-section');
+      
+      if (emailInput) {
+        emailInput.disabled = true;
+        emailInput.classList.add('verified-input');
+      }
+      if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '✓ Verified';
+        sendBtn.classList.add('btn-success');
+      }
+      if (otpSection) otpSection.classList.add('hidden');
+    }
+    
+    // 4. Restore Step
+    if (formData.currentStep && formData.currentStep > 1 && formData.currentStep < 6) {
+      goToStep(formData.currentStep);
+    }
+
+    // 5. Restore Edit Modal
+    if (formData.isEditModalOpen && formData.editRegId) {
+      openEditModal();
+      const input = document.getElementById('edit-search-input');
+      if (input) input.value = formData.editRegId;
+      
+      // Auto trigger lookup, then apply saved inputs!
+      handleLookupEdit().then(() => {
+        // After lookup is complete and form is built, apply saved values
+        document.querySelectorAll('#form-edit-team input, #form-edit-team select').forEach(el => {
+          if (el.id && formData[el.id] !== undefined) {
+            el.value = formData[el.id];
+          }
+        });
+      }).catch(err => console.error(err));
+    }
+  } catch(e) {
+    console.error('Failed to restore session state', e);
+  }
 }
 
 /**
@@ -897,6 +1004,7 @@ async function handlePaymentSubmit(e) {
     });
 
     goToStep(6);
+    sessionStorage.removeItem('codeverse_reg_state');
     showToast('Registration submitted successfully! Pending verification.', 'success');
   } catch (err) {
     showToast(err.message, 'error');
@@ -962,6 +1070,7 @@ function populateReceipt(team, paymentInfo) {
  */
 function goToStep(stepNumber) {
   state.currentStep = stepNumber;
+  setTimeout(saveSessionState, 10);
 
   // Update Wizard Steps Visibility
   document.querySelectorAll('.wizard-step').forEach(step => {
@@ -1490,6 +1599,7 @@ async function handleSaveTeamEdit(e) {
     }
 
     showToast(`✅ Team "${teamName}" details updated successfully! Updated in live records and Excel export.`, 'success');
+    sessionStorage.removeItem('codeverse_reg_state');
     closeEditModal();
 
     // If tracker is open or recent registration exists, update status
