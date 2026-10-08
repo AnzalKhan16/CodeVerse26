@@ -48,10 +48,10 @@ async function sendViaAppsScript(to, subject, html) {
 }
 
 async function sendOTPEmail(toEmail, otp) {
-  const subject = 'CodeVerse 2026 - Team Leader Email Verification (OTP)';
+  const subject = 'CodeVerse 2.0 - Team Leader Email Verification (OTP)';
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
-      <h2 style="color: #6366f1;">CodeVerse 2026</h2>
+      <h2 style="color: #6366f1;">CodeVerse 2.0</h2>
       <p>Hello Team Leader,</p>
       <p>Use the following One-Time Password (OTP) to verify your email address for the CodeVerse Hackathon registration:</p>
       <div style="text-align: center; margin: 30px 0;">
@@ -88,7 +88,7 @@ async function sendOTPEmail(toEmail, otp) {
 async function sendStatusEmail(toEmail, teamName, status, reason = '') {
   let statusColor = status === 'Verified' ? '#10b981' : '#ef4444';
   let statusMessage = status === 'Verified' 
-    ? "Congratulations! Your team's registration has been successfully verified. You are now officially enrolled in CodeVerse 2026."
+    ? "Congratulations! Your team's registration has been successfully verified. You are now officially enrolled in CodeVerse 2.0."
     : "Unfortunately, your team's registration has been rejected.";
 
   let reasonHtml = '';
@@ -102,10 +102,10 @@ async function sendStatusEmail(toEmail, teamName, status, reason = '') {
     `;
   }
 
-  const subject = `CodeVerse 2026 Registration Status - ${status}`;
+  const subject = `CodeVerse 2.0 Registration Status - ${status}`;
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
-      <h2 style="color: #6366f1;">CodeVerse 2026</h2>
+      <h2 style="color: #6366f1;">CodeVerse 2.0</h2>
       <p>Hello Team Leader (<strong>${teamName}</strong>),</p>
       <p>We are writing to update you on your hackathon registration status.</p>
       
