@@ -377,7 +377,7 @@ async function getMetrics() {
     if (t.status === 'REJECTED') rejected++;
   }
 
-  return { totalTeams, pendingVerification, verified, rejected, totalRevenue };
+  return { totalTeams, pendingVerification, verifiedTeams: verified, rejected, totalRevenue };
 }
 
 async function getSetting(key, defaultValue = null) {
