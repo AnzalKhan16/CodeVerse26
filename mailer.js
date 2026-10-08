@@ -61,7 +61,7 @@ async function sendOTPEmail(toEmail, otp) {
       </div>
       <p style="color: #6b7280; font-size: 14px;">This OTP is valid for 10 minutes. Do not share this code with anyone.</p>
       <br>
-      <p>Best regards,<br><strong>Metaverse Club, VIT Bhopal</strong></p>
+      <p>Best regards,<br><strong>Metaversity Club, VIT Bhopal</strong></p>
     </div>
   `;
 
@@ -119,7 +119,7 @@ async function sendStatusEmail(toEmail, teamName, status, reason = '') {
       ${reasonHtml}
 
       <br>
-      <p>Best regards,<br><strong>Metaverse Club, VIT Bhopal</strong></p>
+      <p>Best regards,<br><strong>Metaversity Club, VIT Bhopal</strong></p>
     </div>
   `;
 

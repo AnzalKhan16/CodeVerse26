@@ -66,7 +66,7 @@ const HACKATHON_CONFIG = {
     "Open Innovation / Student Track"
   ],
   bankDetails: {
-    accountHolder: "METAVERSE CLUB",
+    accountHolder: "Metaversity Club",
     bankName: "Indian Bank",
     accountNumber: "7967541510",
     ifscCode: "IDIB000V143",
@@ -75,7 +75,7 @@ const HACKATHON_CONFIG = {
   },
   upiDetails: {
     upiId: "metaversevitb@indianbk",
-    payeeName: "METAVERSE CLUB",
+    payeeName: "Metaversity Club",
     merchantCode: "METAVERSE_CLUB"
   }
 };
@@ -395,7 +395,7 @@ app.get('/api/registration/:registrationId', async (req, res) => {
 // ----------------- ADMIN AUTHENTICATION & SECURITY -----------------
 
 const ADMIN_CREDENTIALS = {
-  username: 'Metaverse_Admin',
+  username: 'Metaversity_Admin',
   password: 'Meta@234'
 };
 
@@ -414,14 +414,14 @@ function extractToken(req) {
 }
 
 /**
- * Middleware: Enforces Metaverse_Admin authentication
+ * Middleware: Enforces Metaversity_Admin authentication
  */
 function requireAdminAuth(req, res, next) {
   const token = extractToken(req);
   if (!token || !adminSessions.has(token)) {
     return res.status(401).json({
       success: false,
-      error: 'Access Denied: Admin authentication required. Please log in with Metaverse_Admin.'
+      error: 'Access Denied: Admin authentication required. Please log in with Metaversity_Admin.'
     });
   }
   next();

@@ -35,7 +35,7 @@ async function runTest() {
   const loginRes = await request('http://localhost:3000/api/admin/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' }
-  }, { username: 'Metaverse_Admin', password: 'Meta@234' });
+  }, { username: 'Metaversity_Admin', password: 'Meta@234' });
 
   console.log('1. Admin Login:', loginRes.status, loginRes.data.success ? 'PASS' : 'FAIL');
   const token = loginRes.data.token;

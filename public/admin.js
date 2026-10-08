@@ -1,6 +1,6 @@
 /**
  * CodeVerse Hackathon 2026 - Organizer Admin Dashboard Controller
- * Enforces Metaverse_Admin authentication barrier, loads only fully submitted teams with proof,
+ * Enforces Metaversity_Admin authentication barrier, loads only fully submitted teams with proof,
  * manages UTR verification, roster inspection modal, proof lightbox, and Excel downloads.
  */
 
@@ -32,7 +32,7 @@ async function initAdminAuthFlow() {
     const data = await res.json();
 
     if (res.ok && data.success && data.authenticated) {
-      showDashboardScreen(data.username || 'Metaverse_Admin');
+      showDashboardScreen(data.username || 'Metaversity_Admin');
       await Promise.all([loadMetrics(), loadTeams(), loadDeadlineSettings()]);
       bindDashboardEvents();
     } else {
@@ -65,7 +65,7 @@ function showLoginScreen() {
   document.getElementById('nav-auth-controls')?.classList.add('hidden');
 }
 
-function showDashboardScreen(username = 'Metaverse_Admin') {
+function showDashboardScreen(username = 'Metaversity_Admin') {
   document.getElementById('admin-login-screen')?.classList.add('hidden');
   document.getElementById('admin-dashboard-screen')?.classList.remove('hidden');
   document.getElementById('nav-auth-controls')?.classList.remove('hidden');
@@ -625,7 +625,7 @@ async function quickVerifyTeam(registrationId) {
       body: JSON.stringify({
         registrationId,
         status: 'VERIFIED',
-        adminNotes: 'Quick-approved by Metaverse_Admin'
+        adminNotes: 'Quick-approved by Metaversity_Admin'
       })
     });
     const data = await res.json();
