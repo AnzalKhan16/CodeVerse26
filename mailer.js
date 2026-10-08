@@ -19,23 +19,8 @@ async function sendViaAppsScript(to, subject, html) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ to, subject, html }),
-      redirect: 'manual' // Prevent fetch from changing POST to GET on 302 redirect
+      body: JSON.stringify({ to, subject, html })
     });
-
-    // Handle Google's 302 redirect manually to keep it as a POST
-    if (response.status === 302 || response.status === 301 || response.status === 303) {
-      const redirectUrl = response.headers.get('location');
-      if (redirectUrl) {
-        response = await fetch(redirectUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ to, subject, html })
-        });
-      }
-    }
 
     // We expect the script to return plain text or JSON
     const text = await response.text();
