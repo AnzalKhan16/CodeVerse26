@@ -86,8 +86,8 @@ async function sendOTPEmail(toEmail, otp) {
 async function sendStatusEmail(toEmail, teamName, status, reason = '') {
   let statusColor = status === 'Verified' ? '#10b981' : '#ef4444';
   let statusMessage = status === 'Verified' 
-    ? 'Congratulations! Your team\\'s registration has been successfully verified. You are now officially enrolled in CodeVerse 2026.'
-    : 'Unfortunately, your team\\'s registration has been rejected.';
+    ? "Congratulations! Your team's registration has been successfully verified. You are now officially enrolled in CodeVerse 2026."
+    : "Unfortunately, your team's registration has been rejected.";
 
   let reasonHtml = '';
   if (status === 'Rejected' && reason) {
