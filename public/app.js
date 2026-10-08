@@ -110,6 +110,14 @@ function restoreSessionState() {
   
   try {
     const formData = JSON.parse(savedStr);
+
+    // Bypass instructions gate if there is saved state
+    const instructionsGate = document.getElementById('instructions-gate');
+    const registerWizard = document.getElementById('register-wizard-container');
+    if (instructionsGate && registerWizard) {
+      instructionsGate.style.display = 'none';
+      registerWizard.style.display = 'block';
+    }
     
     // 1. Restore Member Count
     if (formData.memberCount) {
@@ -149,7 +157,7 @@ function restoreSessionState() {
     }
     
     // 4. Restore Step
-    if (formData.currentStep && formData.currentStep > 1 && formData.currentStep < 6) {
+    if (formData.currentStep && formData.currentStep >= 1 && formData.currentStep < 6) {
       goToStep(formData.currentStep);
     }
 
