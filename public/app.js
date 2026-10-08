@@ -730,7 +730,7 @@ async function handleConfirmAndProceedToPayment() {
     }
 
     state.registeredTeam = data.team;
-    const regId = data.team.registration_id;
+    const regId = data.team.registrationId;
 
     // Display Registration ID in Step 4
     const regIdDisplay = document.getElementById('payment-reg-id-display');
@@ -839,7 +839,7 @@ function setupDropzone() {
 async function handlePaymentSubmit(e) {
   e.preventDefault();
 
-  const regId = state.registeredTeam?.registration_id;
+  const regId = state.registeredTeam?.registrationId || state.registeredTeam?.registration_id;
   if (!regId) {
     showToast('Registration session lost. Please restart from Step 1.', 'error');
     goToStep(1);
@@ -1035,7 +1035,7 @@ async function handleTrackLookup() {
 
     resultContainer.innerHTML = `
       <div style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
-        <h4 style="color:#fff; font-size: 1.15rem;">${escapeHtml(team.team_name)}</h4>
+        <h4 style="color:#fff; font-size: 1.15rem;">${escapeHtml(team.teamName)}</h4>
         <span class="badge-track" style="margin-top: 0.35rem;">${escapeHtml(team.track)}</span>
       </div>
 
@@ -1045,12 +1045,12 @@ async function handleTrackLookup() {
       </div>
 
       <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-        <div><strong>Team Leader:</strong> ${escapeHtml(team.leader?.full_name || '-')} (${escapeHtml(team.leader?.college_email || '-')})</div>
-        <div><strong>Team Size:</strong> ${team.member_count} Members</div>
+        <div><strong>Team Leader:</strong> ${escapeHtml(team.leader?.fullName || '-')} (${escapeHtml(team.leader?.collegeEmail || '-')})</div>
+        <div><strong>Team Size:</strong> ${team.memberCount} Members</div>
         ${payment ? `
-          <div><strong>Payment Method:</strong> ${escapeHtml(payment.payment_method)}</div>
-          <div><strong>UTR:</strong> <code class="monospace">${escapeHtml(payment.utr_number)}</code></div>
-          ${payment.admin_notes ? `<div style="margin-top: 0.5rem; color: var(--warning);"><strong>Admin Note:</strong> ${escapeHtml(payment.admin_notes)}</div>` : ''}
+          <div><strong>Payment Method:</strong> ${escapeHtml(payment.paymentMethod)}</div>
+          <div><strong>UTR:</strong> <code class="monospace">${escapeHtml(payment.utrNumber)}</code></div>
+          ${payment.adminNotes ? `<div style="margin-top: 0.5rem; color: var(--warning);"><strong>Admin Note:</strong> ${escapeHtml(payment.adminNotes)}</div>` : ''}
         ` : `
           <div style="color: var(--warning); margin-top: 0.5rem;">Payment proof has not been submitted yet.</div>
         `}
@@ -1065,7 +1065,7 @@ async function handleTrackLookup() {
 
     document.getElementById('btn-track-jump-edit')?.addEventListener('click', () => {
       closeTrackModal();
-      openEditModal(team.registration_id);
+      openEditModal(team.registrationId);
     });
   } catch (err) {
     resultContainer.innerHTML = `
