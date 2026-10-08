@@ -381,16 +381,21 @@ async function getMetrics() {
 }
 
 async function getSetting(key, defaultValue = null) {
-  const { data } = await supabase.from('app_settings').select('value').eq('key', key).limit(1).maybeSingle();
+  const { data, error } = await supabase.from('app_settings').select('value').eq('key', key).limit(1).maybeSingle();
+  if (error) throw new Error(error.message);
   return data ? data.value : defaultValue;
 }
 
 async function setSetting(key, value) {
-  const { data: existing } = await supabase.from('app_settings').select('key').eq('key', key).limit(1).maybeSingle();
+  const { data: existing, error: selectError } = await supabase.from('app_settings').select('key').eq('key', key).limit(1).maybeSingle();
+  if (selectError) throw new Error(selectError.message);
+  
   if (existing) {
-    await supabase.from('app_settings').update({ value: String(value), updated_at: new Date().toISOString() }).eq('key', key);
+    const { error } = await supabase.from('app_settings').update({ value: String(value), updated_at: new Date().toISOString() }).eq('key', key);
+    if (error) throw new Error(error.message);
   } else {
-    await supabase.from('app_settings').insert([{ key, value: String(value) }]);
+    const { error } = await supabase.from('app_settings').insert([{ key, value: String(value) }]);
+    if (error) throw new Error(error.message);
   }
 }
 
