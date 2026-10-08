@@ -215,13 +215,15 @@ async function getAllTeams({ status = 'ALL', search = '', onlyCompleted = true }
   const teams = [];
   for (const row of results) {
     const { payments, ...teamData } = row;
-    if (onlyCompleted && (!payments[0]?.utr_number || !payments[0]?.proof_file_path)) continue;
+    const paymentObj = Array.isArray(payments) ? payments[0] : payments;
+    
+    if (onlyCompleted && (!paymentObj?.utr_number || !paymentObj?.proof_file_path)) continue;
 
     const { data: members } = await supabase.from('team_members').select('*').eq('team_id', teamData.id).order('is_leader', { ascending: false }).order('created_at', { ascending: true });
     
     teams.push({
       ...teamData,
-      payment: payments[0] || null,
+      payment: paymentObj || null,
       members: (members || []).map(m => ({ ...m, isLeader: Boolean(m.is_leader) })),
       leader: (members || []).find(m => m.is_leader) || (members || [])[0] || null
     });
@@ -320,7 +322,8 @@ async function getMetrics() {
     if (t.status === 'PENDING_VERIFICATION') pendingVerification++;
     if (t.status === 'VERIFIED') {
       verified++;
-      totalRevenue += (t.payments && t.payments[0]?.amount_paid) ? t.payments[0].amount_paid : 0;
+      const paymentObj = Array.isArray(t.payments) ? t.payments[0] : t.payments;
+      totalRevenue += (paymentObj && paymentObj.amount_paid) ? paymentObj.amount_paid : 0;
     }
     if (t.status === 'REJECTED') rejected++;
   }
