@@ -149,15 +149,15 @@ async function updateTeamDetails({ registrationId, teamName, track, projectTitle
   const team = await getTeamByRegistrationId(registrationId);
   if (!team) throw new Error(`Team ${registrationId} not found.`);
 
-  if (teamName && teamName.trim().toLowerCase() !== team.team_name.toLowerCase()) {
+  if (teamName && teamName.trim().toLowerCase() !== team.teamName.toLowerCase()) {
     const { data: existing } = await supabase.from('teams').select('id').ilike('team_name', teamName.trim()).limit(1).maybeSingle();
     if (existing) throw new Error(`Team name "${teamName}" is already taken.`);
   }
 
   await supabase.from('teams').update({
-    team_name: teamName ? teamName.trim() : team.team_name,
+    team_name: teamName ? teamName.trim() : team.teamName,
     track: track || team.track,
-    project_title: projectTitle || team.project_title,
+    project_title: projectTitle || team.projectTitle,
     updated_at: new Date().toISOString()
   }).eq('id', team.id);
 
@@ -315,15 +315,15 @@ async function adminUpdateTeam({ registrationId, teamName, track, projectTitle, 
   let team = await getTeamByRegistrationId(registrationId);
   if (!team) throw new Error('Team not found');
 
-  if (teamName && teamName.trim().toLowerCase() !== team.team_name.toLowerCase()) {
+  if (teamName && teamName.trim().toLowerCase() !== team.teamName.toLowerCase()) {
     const { data: existing } = await supabase.from('teams').select('id').ilike('team_name', teamName.trim()).limit(1).maybeSingle();
     if (existing) throw new Error(`Team name "${teamName}" is already taken.`);
   }
 
   await supabase.from('teams').update({
-    team_name: teamName ? teamName.trim() : team.team_name,
+    team_name: teamName ? teamName.trim() : team.teamName,
     track: track || team.track,
-    project_title: projectTitle || team.project_title,
+    project_title: projectTitle || team.projectTitle,
     status: status || team.status,
     updated_at: new Date().toISOString()
   }).eq('id', team.id);
