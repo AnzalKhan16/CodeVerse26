@@ -33,7 +33,7 @@ async function initAdminAuthFlow() {
 
     if (res.ok && data.success && data.authenticated) {
       showDashboardScreen(data.username || 'Metaversity_Admin');
-      await Promise.all([loadMetrics(), loadTeams(), loadDeadlineSettings()]);
+      await Promise.all([loadMetrics(), loadTeams(), loadDeadlineSettings(), loadRegistrationDeadlineSettings()]);
       bindDashboardEvents();
     } else {
       clearAuthToken();
@@ -127,7 +127,7 @@ function bindAuthEvents() {
       showDashboardScreen(data.username);
       showToast(`Welcome back, ${data.username}!`, 'success');
 
-      await Promise.all([loadMetrics(), loadTeams(), loadDeadlineSettings()]);
+      await Promise.all([loadMetrics(), loadTeams(), loadDeadlineSettings(), loadRegistrationDeadlineSettings()]);
       bindDashboardEvents();
     } catch (err) {
       if (alertBox) {
@@ -198,7 +198,7 @@ function bindDashboardEvents() {
 
   // Refresh
   document.getElementById('btn-refresh-data')?.addEventListener('click', async () => {
-    await Promise.all([loadMetrics(), loadTeams(), loadDeadlineSettings()]);
+    await Promise.all([loadMetrics(), loadTeams(), loadDeadlineSettings(), loadRegistrationDeadlineSettings()]);
     showToast('Dashboard refreshed with latest data.', 'info');
   });
 
@@ -215,6 +215,9 @@ function bindDashboardEvents() {
   // Deadline Setting Handlers
   document.getElementById('btn-save-deadline')?.addEventListener('click', saveDeadlineSettings);
   document.getElementById('btn-clear-deadline')?.addEventListener('click', clearDeadlineSettings);
+  
+  document.getElementById('btn-save-reg-deadline')?.addEventListener('click', saveRegistrationDeadlineSettings);
+  document.getElementById('btn-clear-reg-deadline')?.addEventListener('click', clearRegistrationDeadlineSettings);
 
   // Modal Closures & Back buttons
   document.getElementById('modal-detail-close')?.addEventListener('click', closeDetailModal);
@@ -271,6 +274,140 @@ function bindDashboardEvents() {
   // Admin Edit Form Submit
   document.getElementById('admin-edit-form')?.addEventListener('submit', handleAdminEditSubmit);
 }
+
+// ==========================================
+// REGISTRATION DEADLINE LOGIC
+// ==========================================
+
+async function loadRegistrationDeadlineSettings() {
+  try {
+    const res = await authFetch('/api/admin/settings/registration-deadline');
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Failed to load registration deadline settings.');
+    }
+
+    const input = document.getElementById('admin-reg-deadline-input');
+    const displayEl = document.getElementById('current-reg-deadline-display');
+    const pill = document.getElementById('reg-deadline-status-pill');
+    const statusTextEl = document.getElementById('reg-deadline-status-text');
+
+    if (data.deadline) {
+      if (input) input.value = formatToDatetimeLocal(data.deadline);
+      const formatted = new Date(data.deadline).toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      });
+
+      if (displayEl) displayEl.innerHTML = `<strong style="color:var(--text-main)">${formatted}</strong>`;
+
+      if (data.isPassed) {
+        if (pill) {
+          pill.className = 'badge-deadline expired';
+          statusTextEl.textContent = 'Registrations: Closed (Deadline Passed)';
+        }
+      } else {
+        if (pill) {
+          pill.className = 'badge-deadline open';
+          statusTextEl.textContent = 'Registrations: Open (Active)';
+        }
+      }
+    } else {
+      if (input) input.value = '';
+      if (displayEl) {
+        displayEl.innerHTML = `<strong>No deadline set</strong> (Registrations are open indefinitely)`;
+      }
+      if (pill) {
+        pill.className = 'badge-deadline open';
+        statusTextEl.textContent = 'Registrations: Open (No Deadline)';
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load registration deadline settings:', err);
+    showToast('Failed to load registration deadline setting.', 'error');
+  }
+}
+
+async function saveRegistrationDeadlineSettings() {
+  const input = document.getElementById('admin-reg-deadline-input');
+  const val = input?.value;
+
+  if (!val) {
+    showToast('Please select a date and time to set a registration deadline.', 'warning');
+    return;
+  }
+
+  const isoDeadline = new Date(val).toISOString();
+  const saveBtn = document.getElementById('btn-save-reg-deadline');
+
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '💾 Saving...';
+  }
+
+  try {
+    const res = await authFetch('/api/admin/settings/registration-deadline', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ deadline: isoDeadline })
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Failed to save registration deadline.');
+    }
+
+    showToast('✅ Registration deadline updated successfully!', 'success');
+    await loadRegistrationDeadlineSettings();
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = '💾 Save Deadline';
+    }
+  }
+}
+
+async function clearRegistrationDeadlineSettings() {
+  const clearBtn = document.getElementById('btn-clear-reg-deadline');
+  const input = document.getElementById('admin-reg-deadline-input');
+
+  if (clearBtn) {
+    clearBtn.disabled = true;
+    clearBtn.innerHTML = '🔓 Clearing...';
+  }
+
+  try {
+    const res = await authFetch('/api/admin/settings/registration-deadline', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ deadline: null })
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Failed to clear registration deadline.');
+    }
+
+    if (input) input.value = '';
+    showToast('🔓 Registration deadline removed. Registrations are now open indefinitely.', 'info');
+    await loadRegistrationDeadlineSettings();
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    if (clearBtn) {
+      clearBtn.disabled = false;
+      clearBtn.innerHTML = '🔓 Open Indefinitely';
+    }
+  }
+}
+
+// ==========================================
+// EDIT DEADLINE LOGIC
+// ==========================================
 
 /**
  * Load Deadline Configuration

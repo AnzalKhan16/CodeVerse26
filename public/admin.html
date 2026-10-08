@@ -152,13 +152,48 @@
       </div>
     </div>
 
-    <!-- Edit Window & Deadline Settings Card -->
+    <!-- Registration Deadline Settings Card -->
     <div class="card admin-settings-card">
+      <div class="settings-card-header">
+        <div class="settings-title-group">
+          <span class="settings-icon">⏳</span>
+          <div>
+            <h3 class="settings-title">Student Registration Deadline</h3>
+            <p class="settings-sub">Set the deadline until which students can submit new registrations.</p>
+          </div>
+        </div>
+        <div id="reg-deadline-status-pill" class="badge-deadline open">
+          <span class="status-indicator-dot pulse"></span>
+          <span id="reg-deadline-status-text">Registrations: Open</span>
+        </div>
+      </div>
+
+      <div class="settings-form-row">
+        <div class="deadline-input-wrap">
+          <label for="admin-reg-deadline-input" class="form-label">Set Registration Deadline (Date & Time):</label>
+          <input type="datetime-local" id="admin-reg-deadline-input" class="form-input deadline-datetime-input">
+        </div>
+        <div class="settings-btn-group">
+          <button type="button" class="btn btn-primary" id="btn-save-reg-deadline">
+            💾 Save Deadline
+          </button>
+          <button type="button" class="btn btn-secondary" id="btn-clear-reg-deadline" title="Allow registrations indefinitely">
+            🔓 Open Indefinitely
+          </button>
+        </div>
+      </div>
+      <div class="deadline-active-info">
+        Current Setting: <strong id="current-reg-deadline-display">No deadline set (Registrations are open)</strong>
+      </div>
+    </div>
+
+    <!-- Edit Window & Deadline Settings Card -->
+    <div class="card admin-settings-card" style="margin-top: 1.5rem;">
       <div class="settings-card-header">
         <div class="settings-title-group">
           <span class="settings-icon">⏰</span>
           <div>
-            <h3 class="settings-title">Student Registration & Team Edit Deadline</h3>
+            <h3 class="settings-title">Team Edit Deadline</h3>
             <p class="settings-sub">Set the deadline until which students can update team name, topics, leader, and member details.</p>
           </div>
         </div>

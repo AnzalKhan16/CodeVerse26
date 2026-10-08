@@ -260,6 +260,15 @@ app.post('/api/verify-otp', (req, res) => {
  */
 app.post('/api/register', async (req, res) => {
   try {
+    // Check Registration Deadline
+    const isDeadlinePassed = await db.isRegistrationDeadlinePassed();
+    if (isDeadlinePassed) {
+      return res.status(403).json({
+        success: false,
+        error: 'The registration deadline has passed. No new teams can be registered.'
+      });
+    }
+
     const { teamName, track, projectTitle, members } = req.body;
 
     if (!teamName || !teamName.trim()) {
@@ -710,6 +719,46 @@ app.post('/api/admin/settings/deadline', requireAdminAuth, async (req, res) => {
     res.json({
       success: true,
       message: savedDeadline ? 'Team edit deadline updated successfully.' : 'Team edit deadline cleared (edits open indefinitely).',
+      deadline: savedDeadline,
+      isPassed
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * GET /api/admin/settings/registration-deadline
+ * Fetch the current student registration deadline date/time
+ */
+app.get('/api/admin/settings/registration-deadline', requireAdminAuth, async (req, res) => {
+  try {
+    const registrationDeadline = await db.getRegistrationDeadline();
+    const isPassed = await db.isRegistrationDeadlinePassed();
+    
+    res.json({
+      success: true,
+      deadline: registrationDeadline,
+      isPassed
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * POST /api/admin/settings/registration-deadline
+ * Set or clear the student registration deadline date/time
+ */
+app.post('/api/admin/settings/registration-deadline', requireAdminAuth, async (req, res) => {
+  try {
+    const { deadline } = req.body;
+    const savedDeadline = await db.setRegistrationDeadline(deadline);
+    const isPassed = await db.isRegistrationDeadlinePassed();
+
+    res.json({
+      success: true,
+      message: savedDeadline ? 'Registration deadline updated successfully.' : 'Registration deadline cleared (registrations open indefinitely).',
       deadline: savedDeadline,
       isPassed
     });

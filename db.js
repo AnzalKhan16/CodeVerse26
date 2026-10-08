@@ -383,18 +383,21 @@ async function getMetrics() {
 async function getSetting(key, defaultValue = null) {
   const { data, error } = await supabase.from('app_settings').select('value').eq('key', key).limit(1).maybeSingle();
   if (error) throw new Error(error.message);
-  return data ? data.value : defaultValue;
+  if (!data) return defaultValue;
+  if (data.value === 'null' || data.value === '') return defaultValue;
+  return data.value;
 }
 
 async function setSetting(key, value) {
+  const valToSave = value === null ? '' : String(value);
   const { data: existing, error: selectError } = await supabase.from('app_settings').select('key').eq('key', key).limit(1).maybeSingle();
   if (selectError) throw new Error(selectError.message);
   
   if (existing) {
-    const { error } = await supabase.from('app_settings').update({ value: String(value), updated_at: new Date().toISOString() }).eq('key', key);
+    const { error } = await supabase.from('app_settings').update({ value: valToSave, updated_at: new Date().toISOString() }).eq('key', key);
     if (error) throw new Error(error.message);
   } else {
-    const { error } = await supabase.from('app_settings').insert([{ key, value: String(value) }]);
+    const { error } = await supabase.from('app_settings').insert([{ key, value: valToSave }]);
     if (error) throw new Error(error.message);
   }
 }
@@ -417,6 +420,24 @@ async function isEditDeadlinePassed() {
   return new Date() > deadline;
 }
 
+async function getRegistrationDeadline() {
+  return await getSetting('registration_deadline', null);
+}
+
+async function setRegistrationDeadline(isoDateString) {
+  const val = isoDateString ? new Date(isoDateString).toISOString() : null;
+  await setSetting('registration_deadline', val);
+  return val;
+}
+
+async function isRegistrationDeadlinePassed() {
+  const deadlineStr = await getRegistrationDeadline();
+  if (!deadlineStr || deadlineStr.trim() === '') return false;
+  const deadline = new Date(deadlineStr);
+  if (isNaN(deadline.getTime())) return false;
+  return new Date() > deadline;
+}
+
 module.exports = {
   supabase,
   createTeam,
@@ -432,5 +453,8 @@ module.exports = {
   setSetting,
   getEditDeadline,
   setEditDeadline,
-  isEditDeadlinePassed
+  isEditDeadlinePassed,
+  getRegistrationDeadline,
+  setRegistrationDeadline,
+  isRegistrationDeadlinePassed
 };
