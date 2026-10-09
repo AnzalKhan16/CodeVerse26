@@ -975,6 +975,10 @@
   </footer>
 
   <script src="app.js"></script>
+  <script>
+    // Clear any partial registration state if the user returns to the homepage
+    sessionStorage.removeItem('codeverse_reg_state');
+  </script>
 </body>
 
 </html>
