@@ -413,8 +413,8 @@ app.get('/api/registration/:registrationId', async (req, res) => {
 // ----------------- ADMIN AUTHENTICATION & SECURITY -----------------
 
 const ADMIN_CREDENTIALS = {
-  username: 'Metaversity_Admin',
-  password: 'Meta@234'
+  username: process.env.ADMIN_USERNAME,
+  password: process.env.ADMIN_PASSWORD
 };
 
 // In-memory set of active admin session tokens
