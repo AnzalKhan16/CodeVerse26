@@ -48,6 +48,11 @@ const upload = multer({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(uploadsDir));
 
+// Route for admin authentication page
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 // Hackathon Payment & Registration Configuration
 const HACKATHON_CONFIG = {
   eventName: "CodeVerse Hackathon 2026",
