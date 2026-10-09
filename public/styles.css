@@ -3025,8 +3025,9 @@ img, svg, video, canvas {
 }
 /* ================= NEW SPONSORS HORIZONTAL PANELS ================= */
 .sponsors-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2.5rem;
   margin-top: 4rem;
   width: 100%;
@@ -3057,6 +3058,10 @@ img, svg, video, canvas {
   overflow: visible;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  width: 280px;
+  flex-grow: 1;
+  max-width: 340px;
+
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
