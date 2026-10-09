@@ -3023,3 +3023,151 @@ img, svg, video, canvas {
     gap: 12px;
   }
 }
+/* ================= NEW SPONSORS GRID ================= */
+.sponsors-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+  width: 100%;
+}
+
+.sponsors-wrapper .title-sponsor {
+  grid-column: 1 / -1;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+  border-color: var(--copper-border-bright);
+  box-shadow: 0 8px 32px var(--copper-glow);
+}
+
+.sponsors-wrapper .title-sponsor .sponsor-glow {
+  background: radial-gradient(circle at center, var(--copper-subtle), transparent 70%);
+}
+
+.sponsor-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg, 16px);
+  padding: 3rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.sponsor-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--copper-border);
+  background: var(--bg-card-hover);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.sponsor-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sponsor-card:hover .sponsor-glow {
+  opacity: 1;
+}
+
+.sponsor-category {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--copper);
+  background: var(--copper-subtle);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid var(--copper-border);
+  z-index: 1;
+}
+
+.sponsor-logo-icon {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  background: transparent;
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sponsor-card:hover .sponsor-logo-icon {
+  transform: scale(1.15);
+}
+
+.sponsor-logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sponsor-logo-icon.bg-white {
+  background: #ffffff;
+  padding: 8px;
+}
+
+.sponsor-logo-icon.bg-dark {
+  background: #111111;
+}
+
+.sponsor-logo-icon.rounded-full {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.sponsor-logo-icon.rounded-full img {
+  object-fit: cover;
+}
+
+.sponsor-info {
+  position: relative;
+  z-index: 1;
+}
+
+.sponsor-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  font-family: var(--font-display);
+  color: var(--text-main);
+}
+
+.title-sponsor .sponsor-heading {
+  font-size: 2.2rem;
+  background: var(--grad-copper);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sponsor-caption {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
